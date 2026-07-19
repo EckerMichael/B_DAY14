@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Time Quest 01</title>
+  <title>Time Quest 04</title>
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -69,7 +69,6 @@
       opacity:.6;
     }
 
-    /* overlays like in index.html */
     #flash, #crack{
       position:fixed;
       inset:0;
@@ -136,24 +135,14 @@
       display:block;
     }
 
-    /* irreversibly lock */
     .locked .answers button.choice{
       pointer-events:none;
     }
 
-/* bei Niederlage: nur noch den Text anzeigen */
-.defeat .question{
-  display:none;
-}
+.defeat .question{ display:none; }
+.defeat .answers{ display:none; }
 
-.defeat .answers{
-  display:none;
-}
-
-/* Ergebnis zentrieren */
-.defeat .result{
-  margin-top: 10px;
-}
+.defeat .result{ margin-top: 10px; }
 
   </style>
 </head>
@@ -163,14 +152,14 @@
     <h1>Kinder versus Zeitterror</h1>
 
     <div class="question">
-      <p>Wie viele Fächer hat der Bücherschrank beim Market in Blumau Neurißhof?</p>
+      <p>Wo befinden sich die rechteckigen Fenster der Kirche in Neurißhof?</p>
     </div>
 
     <div class="answers" id="answers">
-      <button class="choice" data-answer="A">A: Sieben</button>
-      <button class="choice" data-answer="B">B: Fünf</button>
-      <button class="choice" data-answer="C">C: Sechs</button>
-      <button class="choice" data-answer="D">D: Acht</button>
+      <button class="choice" data-answer="A">A: „Unten“</button>
+      <button class="choice" data-answer="B">B: „Rechts“</button>
+      <button class="choice" data-answer="C">C: „Es gibt keine rechteckigen Fenster“</button>
+      <button class="choice" data-answer="D">D: „Oben“</button>
     </div>
 
   <div class="result" id="result">
@@ -200,7 +189,7 @@
     const badImg = document.getElementById('badImg');
 
     // ===== HIER: richtige Antwort setzen =====
-    const correct = "C"; // z.B. Option C
+    const correct = "D"; // z.B. Option C
     // ========================================
 
     function redFlash(t){
@@ -227,25 +216,21 @@
 
       const chosen = btn.dataset.answer;
 
-      // irreversibel: sobald gewählt, nichts mehr ändern
       lockEverything();
 
       if(chosen === correct){
-        // Erfolg
         crack.style.opacity = "0";
         flash.style.opacity = "0";
 
-	// Bilder korrekt schalten
   	badImg.style.display = "none";
   	goodImg.style.display = "block";
 
-        goodText.innerHTML  = "Gewonnen!<br>Code-Schnipsel = 'V'<br>Jetzt geht es zur Feuerwehr!";
+        goodText.innerHTML  = "Gewonnen!<br>Code-Schnipsel = 'T'<br>Jetzt geht es zur Feuerwehrstraße 5 in Neurißhof!";
 
         app.classList.remove('defeat');
         return;
       }
 
-      // Niederlage / irreversibel
       goodText.textContent = "";
       app.classList.add('defeat');
       badText.style.display = "block";
@@ -253,14 +238,10 @@
       goodImg.style.display = "none";
       badImg.style.display = "block";
 
-      // Blitz
       redFlash(3);
 
-      // Crack kurz sichtbar (optional)
       setTimeout(() => { crack.style.opacity = "1"; }, 200);
       setTimeout(() => { crack.style.opacity = "0"; }, 1200);
-
-      // „auflösen zu schwarz“ passiert via CSS durch .defeat .blackPanel
     });
   </script>
 </body>

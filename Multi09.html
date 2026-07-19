@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Quest 09</title>
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      background:#000;
+      color:#00ff66;
+      font-family:"Courier New",monospace;
+      padding: 16px;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .wrap{
+      width: min(860px, 100%);
+      display:grid;
+      gap: 16px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom: 6px;
+    }
+
+    .question{
+      border: 2px solid #00ff66;
+      padding: 14px;
+      border-radius: 10px;
+    }
+
+    .answers{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 720px){
+      .answers{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    button.choice{
+      background:#000;
+      border: 2px solid #00ff66;
+      color:#00ff66;
+      padding: 14px 12px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor:pointer;
+      transition: transform .08s ease, background .2s ease;
+      user-select:none;
+    }
+
+    button.choice:active{
+      transform: scale(0.98);
+    }
+
+    button.choice[disabled]{
+      cursor:not-allowed;
+      opacity:.6;
+    }
+
+    /* overlays like in index.html */
+    #flash, #crack{
+      position:fixed;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      z-index: 1000;
+    }
+
+    #flash{
+      background: rgba(255,0,0,.75);
+    }
+
+    #crack{
+      background-image:
+        repeating-linear-gradient(25deg, rgba(255,255,255,.2) 0, rgba(255,255,255,.2) 2px, transparent 2px, transparent 40px),
+        repeating-linear-gradient(-40deg, rgba(255,255,255,.15) 0, rgba(255,255,255,.15) 1px, transparent 1px, transparent 30px);
+    }
+
+    .blackPanel{
+      position:absolute;
+      inset:0;
+      background:#000;
+      opacity:0;
+      transition: opacity .45s ease;
+    }
+
+    .defeat .blackPanel{
+      opacity:1;
+    }
+
+    .stageText{
+      position:relative;
+      z-index: 1;
+      font-size: 20px;
+      line-height: 1.3;
+      padding: 0 10px;
+    }
+
+    .result{
+      text-align:center;
+      font-size: 34px;
+      font-weight: bold;
+      min-height: 50px;
+      letter-spacing: 1px;
+    }
+
+#goodImg,
+#badImg{
+  display:block;
+  margin: 12px auto 0; /* mittig */
+  max-width: 200px;   /* optional, falls du es begrenzen willst */
+  height:auto;
+}
+
+    .good{ color:#00ff66; }
+
+    .bad{
+      color:#ff0000;
+      text-shadow: 0 0 20px rgba(255,0,0,.7);
+      display:none;
+    }
+
+    .defeat .bad{
+      display:block;
+    }
+
+    /* irreversibly lock */
+    .locked .answers button.choice{
+      pointer-events:none;
+    }
+
+/* bei Niederlage: nur noch den Text anzeigen */
+.defeat .question{
+  display:none;
+}
+
+.defeat .answers{
+  display:none;
+}
+
+/* Ergebnis zentrieren */
+.defeat .result{
+  margin-top: 10px;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap" id="app">
+    <h1>Kinder versus Zeitterror</h1>
+
+    <div class="question">
+      <p>Bei der Ausfahrt aus Blumau nach Neurißhof steht ein Schild. Steht darauf „FELIXDORF“, „SOLLENAU“, „WIENER NEUSTADT“ oder "MÖDLING"?</p>
+    </div>
+
+    <div class="answers" id="answers">
+      <button class="choice" data-answer="A">A: „Felixdorf“</button>
+      <button class="choice" data-answer="B">B: „Sollenau“</button>
+      <button class="choice" data-answer="C">C: „Wiener Neustadt“</button>
+      <button class="choice" data-answer="D">D: „Mödling“</button>
+    </div>
+
+  <div class="result" id="result">
+    <div class="good" id="goodText"></div>
+    <img id="goodImg" src="Multi_OK.jpg" alt="OK" style="display:none; margin-top:12px; max-width:100%; height:auto;" />
+
+    <div class="bad" id="badText">Die Zeit-Terroristen haben einen Punkt gewonnen!</div>
+    <img id="badImg" src="Multi_Bad.jpg" alt="Bad" style="display:none; margin-top:12px; max-width:100%; height:auto;" />
+  </div>
+
+  </div>
+
+  <div id="flash"></div>
+  <div id="crack"></div>
+
+  <script>
+    const app = document.getElementById('app');
+    const answersEl = document.getElementById('answers');
+
+    const flash = document.getElementById('flash');
+    const crack = document.getElementById('crack');
+
+    const goodText = document.getElementById('goodText');
+    const badText = document.getElementById('badText');
+
+    const goodImg = document.getElementById('goodImg');
+    const badImg = document.getElementById('badImg');
+
+    // ===== HIER: richtige Antwort setzen =====
+    const correct = "B"; // z.B. Option C
+    // ========================================
+
+    function redFlash(t){
+      let c = 0;
+      const i = setInterval(() => {
+        flash.style.opacity = flash.style.opacity === "1" ? "0" : "1";
+        c++;
+        if(c >= t*2){
+          flash.style.opacity = "0";
+          clearInterval(i);
+        }
+      }, 120);
+    }
+
+    function lockEverything(){
+      app.classList.add('locked');
+      const btns = answersEl.querySelectorAll('button.choice');
+      btns.forEach(b => b.disabled = true);
+    }
+
+    answersEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('button.choice');
+      if(!btn) return;
+
+      const chosen = btn.dataset.answer;
+
+      // irreversibel: sobald gewählt, nichts mehr ändern
+      lockEverything();
+
+      if(chosen === correct){
+        // Erfolg
+        crack.style.opacity = "0";
+        flash.style.opacity = "0";
+
+	// Bilder korrekt schalten
+  	badImg.style.display = "none";
+  	goodImg.style.display = "block";
+
+        goodText.innerHTML  = "Gewonnen!<br>Code-Schnipsel = 'D'<br>Wir fahren jetzt nach Neurißhof! Bis zum Parkplatz für Campingautos.";
+
+        app.classList.remove('defeat');
+        return;
+      }
+
+      // Niederlage / irreversibel
+      goodText.textContent = "";
+      app.classList.add('defeat');
+      badText.style.display = "block";
+      
+      goodImg.style.display = "none";
+      badImg.style.display = "block";
+
+      // Blitz
+      redFlash(3);
+
+      // Crack kurz sichtbar (optional)
+      setTimeout(() => { crack.style.opacity = "1"; }, 200);
+      setTimeout(() => { crack.style.opacity = "0"; }, 1200);
+
+      // „auflösen zu schwarz“ passiert via CSS durch .defeat .blackPanel
+    });
+  </script>
+</body>
+</html>

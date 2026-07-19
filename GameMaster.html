@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Time Quest QR</title>
+  <style>
+    :root { --pad: 18px; }
+    body{
+      margin:0;
+      background:#fff;
+      color:#111;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height:1.25;
+    }
+    .wrap{
+      padding: var(--pad);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h2{
+      margin: 0 0 10px 0;
+      font-size: 26px;
+      font-weight: 700;
+    }
+    a.link{
+      display:block;
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      color:#0b57d0;
+      word-break: break-all;
+      text-decoration: underline;
+    }
+    img.qr{
+      width: 300px;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      background:#fff;
+      border: 1px solid #ddd;
+      margin: 12px 0 0 0;
+    }
+
+    .nav{
+      display:flex;
+      gap: 12px;
+      margin-top: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    button{
+      -webkit-tap-highlight-color: transparent;
+      font-size: 18px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: #f5f5f5;
+      color:#111;
+      width: 48%;
+    }
+    button:active{ transform: translateY(1px); }
+
+    .counter{
+      font-size: 16px;
+      text-align:center;
+      width: 0; /* nur damit counter im Layout nicht viel Platz wegnimmt */
+      flex: 1;
+      color:#333;
+    }
+
+    @media (max-width: 420px){
+      h2{ font-size: 22px; }
+      a.link{ font-size: 16px; }
+      img.qr{ width: 320px; }
+      button{ font-size: 16px; padding: 14px; }
+    }
+
+    .itemHidden{ display:none; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div id="item">
+      <h2 id="title"></h2>
+      <a id="link" class="link" href="#" target="_blank" rel="noopener"></a>
+      <img id="qr" alt="QR-Code" src="" />
+      <div class="nav">
+        <button id="prevBtn" type="button">Zurück</button>
+        <div id="counter" class="counter"></div>
+        <button id="nextBtn" type="button">Weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const items = Array.from({ length: 10 }, (_, i) => {
+      const n = String(i + 1).padStart(2, '0'); // 01..10
+      const page = `Multi${i + 1}.html`;      // Multi1..Multi10
+      const url = `https://eckermichael.github.io/B_DAY14/${page}`;
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=520x520&data=${encodeURIComponent(url)}`;
+      return {
+        title: `Time Quest ${n}`,
+        url,
+        qrSrc
+      };
+    });
+
+    const titleEl = document.getElementById('title');
+    const linkEl = document.getElementById('link');
+    const qrEl = document.getElementById('qr');
+    const counterEl = document.getElementById('counter');
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let index = 0;
+
+    function render() {
+      const item = items[index];
+      titleEl.textContent = item.title;
+      linkEl.href = item.url;
+      linkEl.textContent = item.url;
+      qrEl.src = item.qrSrc;
+      qrEl.alt = `QR zu ${item.title}`;
+      counterEl.textContent = `${index + 1} / ${items.length}`;
+
+      prevBtn.disabled = (index === 0);
+      nextBtn.disabled = (index === items.length - 1);
+
+      prevBtn.style.opacity = prevBtn.disabled ? 0.5 : 1;
+      nextBtn.style.opacity = nextBtn.disabled ? 0.5 : 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (index > 0) {
+        index--;
+        render();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (index < items.length - 1) {
+        index++;
+        render();
+      }
+    });
+
+    // optional: Tastensteuerung (Pfeile links/rechts)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevBtn.click();
+      if (e.key === 'ArrowRight') nextBtn.click();
+    });
+
+    render();
+  </script>
+</body>
+</html>

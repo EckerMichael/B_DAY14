@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Time Quest 01</title>
+  <title>Time Quest 02</title>
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -163,14 +163,14 @@
     <h1>Kinder versus Zeitterror</h1>
 
     <div class="question">
-      <p>Wie viele Fächer hat der Bücherschrank beim Market in Blumau Neurißhof?</p>
+      <p>Wann wurden die Mannschaftsräume beim Feuerwehrhaus umgebaut? Gib die Jahreszahlen genauso ein wie sie dort stehen</p>
     </div>
 
     <div class="answers" id="answers">
-      <button class="choice" data-answer="A">A: Sieben</button>
-      <button class="choice" data-answer="B">B: Fünf</button>
-      <button class="choice" data-answer="C">C: Sechs</button>
-      <button class="choice" data-answer="D">D: Acht</button>
+      <button class="choice" data-answer="A">A: „2005/06“</button>
+      <button class="choice" data-answer="B">B: „1913/14“</button>
+      <button class="choice" data-answer="C">C: „1970/71“</button>
+      <button class="choice" data-answer="D">D: „2014/2015“</button>
     </div>
 
   <div class="result" id="result">
@@ -200,7 +200,7 @@
     const badImg = document.getElementById('badImg');
 
     // ===== HIER: richtige Antwort setzen =====
-    const correct = "C"; // z.B. Option C
+    const correct = "A"; // z.B. Option C
     // ========================================
 
     function redFlash(t){
@@ -239,7 +239,7 @@
   	badImg.style.display = "none";
   	goodImg.style.display = "block";
 
-        goodText.innerHTML  = "Gewonnen!<br>Code-Schnipsel = 'V'<br>Jetzt geht es zur Feuerwehr!";
+        goodText.innerHTML  = "Gewonnen!<br>Code-Schnipsel = '5'<br>Jetzt geht es zum Fußballplatz!";
 
         app.classList.remove('defeat');
         return;
