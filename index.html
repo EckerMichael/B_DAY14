@@ -6,202 +6,169 @@
 <title>c45TZd3</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box
+ }
 
-body {
-  background: #000;
-  color: #00ff66;
-  height: 100vh;
-  overflow: hidden;
-  font-family: "Courier New", monospace;
-}
+body{
+  background:#000;
+  color:#00ff66;
+/*  height:100vh; */
+/*  overflow:hidden; */
+  font-family:"Courier New",monospace
+  }
 
 /* SECTIONS */
-#lockscreen, #invite {
-  width: 100vw;
-  height: 100vh;
-  display: none;
-}
-
-#lockscreen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+#lockscreen{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center
 }
 
 /* SYMBOL BAR */
-#symbols {
-  font-size: 36px;
-  letter-spacing: 14px;
-  margin-bottom: 50px;
-  white-space: nowrap;
+#symbols{
+  font-size:36px;
+  letter-spacing:14px;
+  margin-bottom:50px;
+  white-space:nowrap
 }
 
 /* PASSWORD INPUT */
-input[type="password"] {
-  background: black;
-  border: 5px solid #00ff66;
-  color: #00ff66;
-  font-size: 22px;
-  padding: 14px;
-  text-align: center;
-  outline: none;
-  width: 75%;
-  max-width: 280px;
+input[type=password]
+{
+  background:#000;
+  border:5px solid #00ff66;
+  color:#00ff66;
+  font-size:22px;
+  padding:14px;
+  text-align:center;
+  outline:none;
+  width:75%;
+  max-width:280px;
   box-shadow:
-    0 0 12px #00ff66,
-    0 0 30px #00ff66,
-    0 0 60px rgba(0,255,102,0.9);
-}
+   0 0 12px #00ff66,
+   0 0 30px #00ff66,
+   0 0 60px rgba(0,255,102,.9)
+ }
 
 /* FLASH OVERLAY */
-#flash {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,0,0,0.7);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 10;
-}
+#flash, #crack
+ {
+  position:fixed;
+  inset:0;opacity:0;
+  pointer-events:none
+ }
 
-/* GLASS CRACK */
-#crack {
-  position: fixed;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(25deg,
-      rgba(255,255,255,0.2) 0px,
-      rgba(255,255,255,0.2) 2px,
-      transparent 2px,
-      transparent 40px),
-    repeating-linear-gradient(-40deg,
-      rgba(255,255,255,0.15) 0px,
-      rgba(255,255,255,0.15) 1px,
-      transparent 1px,
-      transparent 30px);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 11;
-}
+#flash
+ {
+ background:rgba(255,0,0,.7);
+ z-index:10
+ }
 
-/* INVITATION */
-#invite {
-  background: linear-gradient(135deg, #ffd86b, #ff8ec7);
-  color: #222;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-}
+#crack
+ {
+  background-image:repeating-linear-gradient(25deg,rgba(255,255,255,.2)0,
+  rgba(255,255,255,.2)2px,transparent 2px,transparent 40px),repeating-linear-gradient(-40deg,rgba(255,255,255,.15)0,
+  rgba(255,255,255,.15)1px,transparent 1px,transparent 30px);
+  z-index:11
+ }
 
-#invite h1 {
-  font-size: 34px;
-  margin-bottom: 12px;
-}
-
-#invite p {
-  font-size: 20px;
-  margin: 8px 0;
-}
 </style>
 </head>
 
 <body>
-
 <div id="flash"></div>
 <div id="crack"></div>
-
-<!-- LOCKSCREEN -->
 <div id="lockscreen">
-  <div ">
+
+<div>
     <br>⟁⍜⎊ ⎊⟒⍜⌬ ⌖⍟ ⟒⎊ ⍜⧖ ⟒
     <br>⧖⌬⎔⟁⍟⌖ ⌖⎔⍟ ⟁⌖ ⍜⧖ ⌖
     <br>⌬⌬⟁⌖ ⌖⎔⧖ ⟒⧖⟁⌖ ⍟⧖⌖⎊
     <br>⎔⌬⎔⟁⧖⟒⍜ ⍜⧖⟁⌖⍟⎊ ⎊⟒
-  </div>
-  <div id="symbols">⟒ ⟒ ⌬ ⌬ ⌬ ⌬ ⌬</div>
-  <input id="password" type="password" placeholder="⟁⟒⟁⟒⟁⟒">
 </div>
 
-<!-- INVITATION -->
-<div id="invite">
-  <h1>🎉 Geburtstagsparty 🎉</h1>
-  <p><strong>Name:</strong> NAME</p>
-  <p><strong>Datum:</strong> DATUM</p>
-  <p><strong>Uhrzeit:</strong> UHRZEIT</p>
-  <p><strong>Ort:</strong> Musterstraße 12, Berlin</p>
-  <p>Du hast das System überwunden 👽</p>
+<div id="symbols"></div>
+<input id="password" type="password" placeholder="⟁⟒⟁⟒⟁⟒">
 </div>
 
 <script>
-/* SYMBOL COUNTER */
-const fixedSymbol = "⟒";
-const alienSymbols = ["⌬","⍜","⎔","⟁","⧖","⌖","⍟","⎊"];
-let counter = [0,0,0,0,0];
-const symbolBox = document.getElementById("symbols");
+const alienSymbols=["⌬","⍜","⎔","⟁","⧖","⌖","⍟","⎊"],
+counter=[0,0,0,0,0],
+symbolBox=document.getElementById("symbols");
 
-function updateCounter() {
-  for (let i = counter.length - 1; i >= 0; i--) {
+function updateCounter()
+ {
+  for(let i=counter.length-1;i>=0;i--)
+   {
     counter[i]++;
-    if (counter[i] < alienSymbols.length) break;
-    counter[i] = 0;
+     if(counter[i]<alienSymbols.length)break;counter[i]=0;
+   }
+   symbolBox.textContent=
+    /*    fixedSymbol + "" + */
+          /*    fixedSymbol + "=" + */   
+    counter.map(i=>alienSymbols[i]).join("");
   }
-
-  symbolBox.textContent =
-/*    fixedSymbol + "" + */
-/*    fixedSymbol + "=" + */
-    counter.map(i => alienSymbols[i]).join("");
-}
-
 // ⏱ 80 ms Rhythmus
-setInterval(updateCounter, 80);
+setInterval(updateCounter,80);
 
 /* PASSWORD LOGIC */
-const validPasswords = [
-  "NEON1","NEON2","NEON3","NEON4","NEON5",
-  "NEON6","NEON7","NEON8","NEON9","NEON10"
-];
+const passwordMap={
+NEON1:"einladung1.html",
+NEON2:"einladung2.html",
+NEON3:"einladung3.html",
+NEON4:"einladung4.html",
+NEON5:"einladung5.html",
+NEON6:"einladung6.html",
+NEON7:"einladung7.html",
+NEON8:"einladung8.html",
+NEON9:"einladung9.html",
+NEON10:"einladung10.html"
+};
 
-const input = document.getElementById("password");
-const flash = document.getElementById("flash");
-const crack = document.getElementById("crack");
+const input=document.getElementById("password"), flash=document.getElementById("flash"), crack=document.getElementById("crack");
 
-function redFlash(times) {
-  let count = 0;
-  const interval = setInterval(() => {
-    flash.style.opacity = (flash.style.opacity == "1") ? "0" : "1";
-    count++;
-    if (count >= times * 2) {
-      flash.style.opacity = "0";
-      clearInterval(interval);
+function redFlash(t)
+ {
+  let c=0;
+  const i=setInterval(()=>
+   {
+    flash.style.opacity=flash.style.opacity=="1"?"0":"1";
+    c++;
+    if(c>=t*2)
+     {
+      flash.style.opacity="0";
+      clearInterval(i)
+     }
+   }
+   ,120)
+  }
+
+
+input.addEventListener("keydown",e=>
+ {
+  if(e.key==="Enter")
+   {
+   const target=passwordMap[input.value.trim()];
+   if(target)
+    {
+     window.location.href=target;
     }
-  }, 120);
-}
-
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    if (validPasswords.includes(input.value)) {
-      document.getElementById("lockscreen").style.display = "none";
-      document.getElementById("invite").style.display = "flex";
-    } else {
-      input.value = "";
-
-      // 4x red flash
-      redFlash(4);
-
-      // glass crack for 5 seconds
-      setTimeout(() => crack.style.opacity = "1", 500);
-      setTimeout(() => crack.style.opacity = "0", 5500);
+   else
+    {
+     input.value="";
+     redFlash(4);
+     setTimeout(()=>crack.style.opacity="1",500);
+     setTimeout(()=>crack.style.opacity="0",5500);
     }
   }
-});
+ }
+);
 </script>
 
 </body>
