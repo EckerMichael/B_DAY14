@@ -1,174 +1,108 @@
 <!DOCTYPE html>
 <html lang="de">
-<head><meta charset="UTF-8">
-<title>Einladung</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Einladung</title>
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box
- }
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-body{
-  background:#000;
-  color:#00ff66;
-/*  height:100vh; */
-/*  overflow:hidden; */
-  font-family:"Courier New",monospace
-  }
-
-.smalltext {
-    font-size: 0.7em;
-}
-
-   /* Container begrenzt die Anzeige auf den verfügbaren Platz */
-    .video-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+    body{
+      background:#000;
+      color:#00ff66;
+      font-family:"Courier New",monospace;
       padding: 16px;
     }
 
-    /* Das "kleine" Anfangsbild */
-    .video-poster {
-      width: min(360px, 90vw);      /* klein, aber responsive */
-      aspect-ratio: 16 / 9;       /* anpassen, falls dein Video anderes Format hat */
-      background: #111;
-      border-radius: 12px;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      position: relative;
+    .smalltext { font-size: 0.75em; }
+
+    .mission-list {
+      margin-left: 24px;
     }
 
-    .video-poster img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .media{
+      max-width:100%;
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
     }
 
-    /* Optional: Play-Icon Overlay */
-    .video-poster::after {
-      content: "▶";
-      color: white;
-      font-size: 42px;
-      line-height: 1;
-      background: rgba(0,0,0,.35);
-      border-radius: 999px;
-      padding: 10px 16px;
-      position: absolute;
+    .media video{
+      width: 20%;
+      max-width: 100%;
+      height: auto;
+      display:block; /* statt none */
+      background:#000;
+
     }
-
-    /* Das eigentliche Video: startet unsichtbar */
-    video {
-      display: none; /* wichtig: erst bei play sichtbar */
-      width: 100%;
-      height: auto; /* Basis */
-      max-height: 80vh; /* verhindert riesige Höhe am Handy */
-      object-fit: contain; /* keine beschnittenen Ränder */
-      border-radius: 12px;
-      background: #000;
-    }
-
-    /* Sobald es "aktiv" ist: Video wird gezeigt und füllt den Bereich responsiv */
-    .is-playing video {
-      display: block;
-      width: min(1100px, 100%); /* Obergrenze auf Desktop */
-    }
-
-  const poster = document.getElementById('poster');
-  const video = document.getElementById('video');
-  const container = document.getElementById('vc');
-
-  function playVideo() {
-    // Klasse setzen, damit <video> sichtbar wird
-    container.classList.add('is-playing');
-    // Video abspielen
-    video.play().catch(() => {});
-  }
-
-  poster.addEventListener('click', playVideo);
-  poster.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') playVideo();
-  });
-
-</style>
-
+  </style>
 </head>
 
-
 <body>
-<div>
-<h1>Hallo Vanessa!</h1>
+  <div>
+    <h1>Hallo Vanessa!</h1>
 
-<p>Gratulation, du wurdest soeben als <b>Zeit-Widerstandskämpferin</b> rekrutiert!
-<br> <br> 
-</p>
+    <p>
+      Gratulation, du wurdest soeben als <b>Zeit-Widerstandskämpferin</b> rekrutiert!
+      <br><br>
+    </p>
 
-<h2>Missionsziel</h2>
-<p>Die epische Aufgabe deiner Gruppe ist es, Zeit-Terroristen das Handwerk zu legen.</p>
-<p>Deine Gruppe handelt zusammen mit Kämpfern im Jahr 2049 der Zeitlinie ⧖⍟⟁⌬⎔⌖.</p>
-<p>Euer Missionsgebiet ist ganz Blumau-Neurißhof.
-<br> <br> 
-</p>
+    <h2>Missionsziel</h2>
+    <p>Die epische Aufgabe deiner Gruppe ist es, Zeit-Terroristen das Handwerk zu legen.</p>
+    <p>Ihr handelt zusammen mit Kämpfern im Jahr 2049 der Zeitlinie ⧖⍟⟁⌬⎔⌖.</p>
+    <p>Euer Missionsgebiet ist ganz Blumau-Neurißhof.</p>
+    <br><br>
 
+    <h2>Zeit & Location</h2>
+    <p><b>Zeitlinie:</b> ⧖⌬⎔⟁⍟⌖</p>
+    <p><b>Datum:</b> Sa. 2026-09-19</p>
+    <p><b>Uhrzeit:</b> 14:00</p>
+    <p><b>Ort:</b> @Home Tudor<br><br></p>
 
-<h2>Zeit & Location</h2>
-<p>
-  <b>Zeitlinie:</b> ⧖⌬⎔⟁⍟⌖
-</p>
-<p>
-  <b>Datum:</b> Sa. 2026-09-19
-</p>
-<p>
-  <b>Uhrzeit:</b> 14:00
-</p>
-<p>
- <b>Ort:</b> @Home Tudor
-<br> <br> 
-</p>
+    <h2>Ausrüstung</h2>
+    <p>Ihr seid als normale Kinder einer Geburtstagsparty getarnt.
+      <br>Folgende Dinge benötigst Du:
+      <ul class="mission-list">
+        <li>Deinen Kommunikator<br>(T-Com oder 2026-Uralt-Handy)</li>
+        <li>Dein Mover<br>(Magnet-Scooter oder Retro-Fahrrad)</li>
+        <li>Nass-Trocken Perimeter<br>(DryFlux oder Old-Style Regenjacke)</li>
+      </ul>
+      <br><br>
+    </p>
 
-<h2>Ausrüstung</h2>
-<p>Ihr seid als normale Kinder einer Geburtstagsparty getarnt.
-<br>Folgende Dinge benötigst Du:
-<ul>
-  <li>- Deinen Kommunikator (Handy)</li>
-  <li>- Dein Fahrrad</li>
-  <li>- Nass-Trocken Perimeter (z.B. Regenschutz)</li>
-</ul>
-<br> <br> 
-</p>
-
-<h2>Info => Temporal-Anruf starten</h2>
-<p class="smalltext"><i>Bitte beachten Sie, dass Ihr veraltetes Gerät keine multitemporale Kommunikation (bidirektionale Audio- und Videoverbindung) ermöglicht.
-<br>
-Mehr Info erhalten Sie von Ihrem Serviceprovider.
-
-</i></p>
-
-
-  <div class="video-wrap">
-    <!-- Wrapper bekommt Klasse, sobald abgespielt wird -->
-    <div class="video-container" id="vc">
-      <!-- KLEINES Anfangsbild (Poster) -->
-      <div class="video-poster" id="poster" role="button" tabindex="0" aria-label="Video abspielen">
-        <!-- Poster-Bild-Datei im selben Ordner, z.B. poster.jpg -->
-        <img src="foto10.jpeg" alt="Video Vorschaubild" />
-      </div>
-
-      <!-- ECHTES VIDEO -->
-      <!-- Datei ebenfalls im selben Ordner, z.B. video.mp4 -->
-      <video id="video" controls playsinline preload="metadata" poster="poster.jpg">
-        <source src="Clip1.mp4" type="video/mp4">
-        Dein Browser unterstützt dieses Video-Format nicht.
-      </video>
-    </div>
+        <h2>Info => Temporal-Anruf starten</h2>
+    <p class="smalltext">
+      <i>
+        Bitte beachten Sie, dass Ihr veraltetes Gerät keine multitemporale Kommunikation (bidirektionale Audio- und Videoverbindung) ermöglicht.
+        <br>Mehr Info erhalten Sie von Ihrem Serviceprovider.
+        </i>
+    </p>
   </div>
 
+<!-- Bild zuerst anzeigen, Klick startet Video -->
+    <div class="media">
+      <video
+        id="clipVideo"
+        src="Clip1.mp4"
+        controls playsinline>
+      </video>
+    </div>
 
+  <script>
 
+    const clipVideo = document.getElementById('clipVideo');
+
+    function playClip() {
+      clipVideo.style.display = 'block';
+      // Abspielen starten (kann auf iOS je nach Klick-Event zuverlässig sein)
+      clipVideo.play().catch(() => {});
+    }
+
+  </script>
 </body>
 </html>
