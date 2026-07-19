@@ -32,17 +32,16 @@
       text-decoration: underline;
     }
 
-    /* QR: passt sich an Bildschirmbreite an, aber max. 3x3cm */
+    /* QR so groß wie möglich fürs Handydisplay */
     img.qr{
-      width: min(35vw, 3cm, 300px); /* 3cm-Obergrenze */
-      max-width: 100%;
+      width: 260px;
+      max-width: 50%;
       height: auto;
       display: block;
       background:#fff;
       border: 1px solid #ddd;
-      margin: 10px 0 0 0;
-      aspect-ratio: 1 / 1;
     }
+
 
     .nav{
       display:flex;
