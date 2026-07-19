@@ -31,14 +31,17 @@
       word-break: break-all;
       text-decoration: underline;
     }
+
+    /* QR: passt sich an Bildschirmbreite an, aber max. 3x3cm */
     img.qr{
-      width: 200px;
-      max-width: 90%;
+      width: min(35vw, 3cm, 300px); /* 3cm-Obergrenze */
+      max-width: 100%;
       height: auto;
       display: block;
       background:#fff;
       border: 1px solid #ddd;
-      margin: 12px 0 0 0;
+      margin: 10px 0 0 0;
+      aspect-ratio: 1 / 1;
     }
 
     .nav{
@@ -63,7 +66,6 @@
     .counter{
       font-size: 16px;
       text-align:center;
-      width: 0; /* nur damit counter im Layout nicht viel Platz wegnimmt */
       flex: 1;
       color:#333;
     }
@@ -71,11 +73,7 @@
     @media (max-width: 420px){
       h2{ font-size: 22px; }
       a.link{ font-size: 16px; }
-      img.qr{ width: 320px; }
-      button{ font-size: 16px; padding: 14px; }
     }
-
-    .itemHidden{ display:none; }
   </style>
 </head>
 
@@ -96,14 +94,13 @@
   <script>
     const items = Array.from({ length: 10 }, (_, i) => {
       const n = String(i + 1).padStart(2, '0'); // 01..10
-      const page = `Multi${i + 1}.html`;      // Multi1..Multi10
+      const page = `Multi${i + 1}.html`;        // Multi1..Multi10
       const url = `https://eckermichael.github.io/B_DAY14/${page}`;
-      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=520x520&data=${encodeURIComponent(url)}`;
-      return {
-        title: `Time Quest ${n}`,
-        url,
-        qrSrc
-      };
+
+      // Wir holen die QR-Variante als SVG/PNG "skalierbar" über CSS,
+      // aber für schärfere Anzeige wählen wir eine hohe interne Auflösung.
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=${encodeURIComponent(url)}`;
+      return { title: `Time Quest ${n}`, url, qrSrc };
     });
 
     const titleEl = document.getElementById('title');
@@ -121,8 +118,10 @@
       titleEl.textContent = item.title;
       linkEl.href = item.url;
       linkEl.textContent = item.url;
+
       qrEl.src = item.qrSrc;
       qrEl.alt = `QR zu ${item.title}`;
+
       counterEl.textContent = `${index + 1} / ${items.length}`;
 
       prevBtn.disabled = (index === 0);
@@ -133,20 +132,13 @@
     }
 
     prevBtn.addEventListener('click', () => {
-      if (index > 0) {
-        index--;
-        render();
-      }
+      if (index > 0) { index--; render(); }
     });
 
     nextBtn.addEventListener('click', () => {
-      if (index < items.length - 1) {
-        index++;
-        render();
-      }
+      if (index < items.length - 1) { index++; render(); }
     });
 
-    // optional: Tastensteuerung (Pfeile links/rechts)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') prevBtn.click();
       if (e.key === 'ArrowRight') nextBtn.click();
@@ -156,3 +148,4 @@
   </script>
 </body>
 </html>
+
