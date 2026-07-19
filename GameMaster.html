@@ -34,8 +34,8 @@
 
     /* QR so groß wie möglich fürs Handydisplay */
     img.qr{
-      width: 100%;
-      max-width: 100px;
+      width: 400px;
+      max-width: 90%;
       height: auto;
       display: block;
       background:#fff;
@@ -81,11 +81,11 @@
     <div id="item">
       <h2 id="title"></h2>
       <a id="link" class="link" href="#" target="_blank" rel="noopener"></a>
-      <img id="qr" alt="QR-Code" src="" />
+      <img id="qr" class="qr" alt="QR-Code" src="" />
       <div class="nav">
         <button id="prevBtn" type="button">Zurück</button>
-        <div id="counter" class="counter"></div>
         <button id="nextBtn" type="button">Weiter</button>
+        <div id="counter" class="counter"></div><br>
       </div>
     </div>
   </div>
